@@ -1,0 +1,43 @@
+command:
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx-pvt.key -out nginx-pub.crt
+
+openssl req 			==> initiates a certificate request
+-x509					==> tells Openssl to output a certificate in this standard formate
+-nodes					==> tells Openssl not to encrypt the private key with this passphrase
+-days 365				==> specifies validity period for 365 days
+-newkey rsa:2048		==> creates 2048 bit rsa key pair
+-keyout nginx-pvt.key	==> specifies private key file name
+-out nginx-pub.crt		==> specifies public key file name
+
+**** nginx configuration for http: ****
+
+events {
+	worker_connections 512;
+}
+http {
+	include mime.types;
+	
+	upstream inception {
+		server 127.0.0.1:443;
+	}
+	server {
+		listen 443;
+		server_name mmonika.42.fr;
+		location / {
+			proxy_pass http://inception;
+			proxy_set_header Host $host;
+			proxy_set_header X-Reat-IP $remote_addr;
+		}
+	}
+}
+
+once activate the self-signed certificate, we need to re-load nginx for activate that.
+nginx -s reload
+
+to stop: nginx -s stop				"ps aux | grep nginx"
+
+source:
+1. https://youtu.be/q8OleYuqntY?si=fRhoGqt2kxg1RiO7
+2. https://www.cyberciti.biz/faq/configure-nginx-to-use-only-tls-1-2-and-1-3/
+3. https://nginx.org/en/docs/http/configuring_https_servers.html (official)
