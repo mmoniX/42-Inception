@@ -6,8 +6,9 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN mkdir /etc/nginx/ssl-certificate
 
-RUN openssl req -x509 -days 365 -newkey rsa:2048 \
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-keyout /etc/nginx/ssl-certificate/nginx-pvt.key \
-	-out /etc/nginx/ssl-certificate/nginx-pub.crt
+	-out /etc/nginx/ssl-certificate/nginx-pub.crt \
+	-subj "/C=DE/ST=BW/L=Heilbronn/O=42Heilbronn/OU=Inception/CN=mmonika.42.fr"
 
-CMD ["nginx", "-s", "reload"]
+CMD ["nginx", "-g", "daemon off;"]

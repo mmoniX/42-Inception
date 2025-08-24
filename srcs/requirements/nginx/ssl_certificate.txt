@@ -10,27 +10,27 @@ openssl req 			==> initiates a certificate request
 -keyout nginx-pvt.key	==> specifies private key file name
 -out nginx-pub.crt		==> specifies public key file name
 
-**** nginx configuration for http: ****
+after that openssl will ask for country, org, etc. to make installation process non-interactive
 
-events {
-	worker_connections 512;
-}
-http {
-	include mime.types;
-	
-	upstream inception {
-		server 127.0.0.1:443;
-	}
-	server {
-		listen 443;
-		server_name mmonika.42.fr;
-		location / {
-			proxy_pass http://inception;
-			proxy_set_header Host $host;
-			proxy_set_header X-Reat-IP $remote_addr;
-		}
-	}
-}
+/C=DE/ST=BW/L=Heilbronn/O=42Heilbronn/OU=Inception/CN=mmonika.42.fr
+
+
+**** nginx configuration for php-fpm: ****
+
+worker_processes 1			==> number of OS process
+worker_connections 1024		==> max simultaneous connections handled per worker
+include mime.types; 		==> maps file extensions as per Content-Type headers for Nginx
+listen 443 ssl				==> only connect with port 443 where certificate given by openssl
+server_name mmonika.42.fr	==> domain name
+root /var/www/html			==> shared as a volume between Nginx and WordPress containers so both see the same files
+index index.php index.html index.htm	==> default files served if a directory is requested
+ssl_certificate /etc/nginx/..		==> ssl public certificate path
+ssl_certificate_key /etc/nginx/..	==> ssl private-key path
+ssl_protocols TLSv1.3				==> ssl protocol
+include snippets/fastcgi-php.conf;	==> load standard Debian PHP-FPM FastCGI params, including SCRIPT_FILENAME mapping
+fastcgi_pass wordpress:9000;		==> points wordPress container running php-fpm on port 9000
+try_files $uri $uri/ /index.php?$query_string	==> serves static files if they exist, otherwise forwards request to index.php
+return 301 https://$host$request_uri	==> redirect http to https
 
 once activate the self-signed certificate, we need to re-load nginx for activate that.
 nginx -s reload
@@ -41,3 +41,4 @@ source:
 1. https://youtu.be/q8OleYuqntY?si=fRhoGqt2kxg1RiO7
 2. https://www.cyberciti.biz/faq/configure-nginx-to-use-only-tls-1-2-and-1-3/
 3. https://nginx.org/en/docs/http/configuring_https_servers.html (official)
+4. https://www.youtube.com/watch?v=BN8lMesmvPw

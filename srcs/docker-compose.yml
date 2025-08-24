@@ -3,12 +3,21 @@ services:
   mariadb:
     build: requirements/mariadb
     container_name: mariadb
+    environment:
+      - database=wp_site
+      - user=
+      - password=
   wordpress:
     build: requirements/wordpress
     container_name: wordpress
+    environment:
+      - host=mariadb
+      -
   nginx:
     build: requirements/nginx
     container_name: nginx
     ports:
       -"443:443"
 networks:
+  internal:
+    driver: bridge
