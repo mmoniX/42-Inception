@@ -1,0 +1,22 @@
+After install mariadb, we need to create user & database. In Docker, the only way to read environment variables is via script. this is why we create a 
+BASH script so that the system can create users & database by accessing credientials.
+
+
+set -echo                                   ==> exit immediately if any command fails
+if [ ! -d "/var/lib/mysql/mysql" ]; then    ==> checks if system database folder exist or not
+
+**** mysql_install_db --user=mysql --datadir="/var/lib/mysql" ****
+
+mysql_install_db            ==> creates default MariaDB system tables in the data directory
+--user=mysql                ==> runs commands as the mysql user
+--datadir="/var/lib/mysql"  ==> specifies where the data should live.
+
+mysqld_safe --skip-networking &                             ==> starts server in safe mode, disable TCP connection during setup and run in the background
+pid="$!"                                                    ==> store process ID
+mariadb -u root <<EOF                                       ==> runs the SQL command using heredoc
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_RPW}';    ==> setup root password
+FLUSH PRIVILEGES;                                           ==> instruction to reload user privileges immediately.
+mariadb -u root -p"$DB_RPW" <<EOF                           ==> connects to database as root using the password
+mysqladmin -u root -p"${DB_RPW}" shutdown                   ==> stops temporary mariadb instance (its needed to start the service normally)
+
+exec mysqld_safe --bind-address=0.0.0.0                     ==> replace the process with service in safe mode by allowing connections from other containers

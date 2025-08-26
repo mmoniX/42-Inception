@@ -2,8 +2,8 @@ FROM debian:bookworm
 
 RUN apt update && apt upgrade -y && apt install -y mariadb-server mariadb-client
 
-RUN mkdir 
+COPY db_setup.sh /db_setup.sh
 
-COPY 
+RUN chmod +x /db_setup.sh
 
-CMD []
+ENTRYPOINT /db_setup.sh
