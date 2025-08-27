@@ -1,25 +1,39 @@
 version: '3'
 services:
   mariadb:
-    build: requirements/mariadb
+    build: ./requirements/mariadb
     container_name: mariadb
+    env_file: .env
     environment:
-      - database=wp_site
+      - DB_NAME=${DB_NAME}
       - user=
       - password=
     volumes:
       - mariadb_data:/var/lib/mysql
   wordpress:
-    build: requirements/wordpress
+    build: ./requirements/wordpress
     container_name: wordpress
     environment:
       - host=mariadb
       -
+    depends_on:
+      - mariadb
+    volums:
+      - wp
   nginx:
-    build: requirements/nginx
+    build: ./requirements/nginx
     container_name: nginx
     ports:
       -"443:443"
+    depends_on:
+      - wordpress
 networks:
   internal:
     driver: bridge
+volumes:
+  db_data:
+    driver: local
+    address: /home/mmonika/data/db
+  wp_data:
+    driver: local
+    address: /home/mmonika/data/wp

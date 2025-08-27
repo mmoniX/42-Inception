@@ -1,6 +1,7 @@
-FROM debian:bookworm
+FROM debian:trixie
 
-RUN apt update && apt upgrade -y && apt install -y nginx openssl
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+	nginx openssl && rm -rf /var/lib/apt/lists/*
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

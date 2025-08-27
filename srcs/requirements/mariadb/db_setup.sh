@@ -6,7 +6,6 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "Starting MariaDB...."
     mysql_install_db --user=mysql --datadir="/var/lib/mysql"
     mysqld_safe --skip-networking &
-    pid="$!"
 
     echo "Waiting for MariaDB to be ready...."
     sleep 5

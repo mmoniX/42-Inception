@@ -1,6 +1,7 @@
-FROM debian:bookworm
+FROM debian:trixie
 
-RUN apt update && apt upgrade -y && apt install -y mariadb-server mariadb-client
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    mariadb-server mariadb-client && rm -rf /var/lib/apt/lists/*
 
 COPY db_setup.sh /db_setup.sh
 

@@ -12,7 +12,6 @@ mysql_install_db            ==> creates default MariaDB system tables in the dat
 --datadir="/var/lib/mysql"  ==> specifies where the data should live.
 
 mysqld_safe --skip-networking &                             ==> starts server in safe mode, disable TCP connection during setup and run in the background
-pid="$!"                                                    ==> store process ID
 mariadb -u root <<EOF                                       ==> runs the SQL command using heredoc
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_RPW}';    ==> setup root password
 FLUSH PRIVILEGES;                                           ==> instruction to reload user privileges immediately.
