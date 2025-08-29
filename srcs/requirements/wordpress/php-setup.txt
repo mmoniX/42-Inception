@@ -17,4 +17,27 @@ php-mbstring => Multibyte string functions (needed for UTF-8 text, non-English c
 
 https://www.youtube.com/watch?v=9E1lyVyh4xc
 https://github.com/eustatos/wordpress-docker-dev-env/blob/master/.env
-https://www.youtube.com/watch?v=kIqWxjDj4IU
+
+
+
+
+
+
+
+#https://medium.com/@ssterdev/inception-guide-42-project-part-i-7e3af15eb671
+#https://medium.com/@imyzf/inception-3979046d90a0
+#https://tuto.grademe.fr/inception/#
+
+#install wordpress inside www/html/
+#Database_name
+#User_name
+#password
+#database_host
+#Table_prefix
+#change file permission debian:www-data html/
+
+# Site titel
+# User_name
+# password
+# email
+# search engine visibility
