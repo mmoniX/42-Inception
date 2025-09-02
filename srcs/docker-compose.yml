@@ -31,6 +31,7 @@ services:
       - web:/var/www/html
     depends_on:
       - mariadb
+      # - redis
     networks:
       - inception
     restart: unless-stopped
@@ -50,15 +51,11 @@ services:
       - inception
     restart: unless-stopped
   # redis:
-    # build: requirements/bonus/redis
-    # container_name: redis
-    # volumes:
-    #   - web:/var/www/html
-    # depends_on:
-    #   - wordpress
-    # networks:
-    #   - inception
-    # restart: unless-stopped
+  #   build: requirements/bonus/redis
+  #   container_name: redis
+  #   networks:
+  #     - inception
+  #   restart: unless-stopped
 volumes:
   web:
     driver: local
