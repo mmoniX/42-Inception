@@ -12,7 +12,7 @@ This project implements a complete web infrastructure using Docker containers wi
 All services run in separate Docker containers and communicate through a custom Docker network.
 
 ## 🏗️ Architecture
-<img src="Screenshot 2025-08-30 at 15.56.21.png" alt="Architecture Diagram" width="500" height="500" style="display: block; margin: 0 auto;">
+<img src="/Users/mmonika/Inception/inception.webp" alt="Architecture Diagram" width="500" height="300" style="display: block; margin: 0 auto;">
 
 ## 📁 Project Structure
 
